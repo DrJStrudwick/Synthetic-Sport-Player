@@ -6,9 +6,13 @@ This is a package designed to simulate sports players/teams that compete against
 
 # Install & import
 Install the project by running:
-```pip install synthSportPlayer-DJS```
+```
+pip install synthSportPlayer-DJS
+```
 and import with:
-```import synthSportPlayer```
+```
+import synthSportPlayer
+```
 
 Offical fully written documentation shall be coming.
 
