@@ -4,6 +4,12 @@ Last updated - 3/3/2021
 
 This is a package designed to simulate sports players/teams that compete against each other in a head-to-head elemination tournaments. This was created in support of another project for more information/documentation please see [the github repo.](https://github.com/DrJStrudwick/Synthetic-Sport-Player)
 
+# Install & import
+Install the project by running:
+`pip install synthSportPlayer-DJS`
+and import with:
+`import synthSportPlayer`
+
 Offical fully written documentation shall be coming.
 
 There are 3 primary classes contained within this package:
