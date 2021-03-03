@@ -1,4 +1,4 @@
-# Synthetic-Sport-Player
+# synthSportPlayer Package
 
 Last updated - 3/3/2021
 

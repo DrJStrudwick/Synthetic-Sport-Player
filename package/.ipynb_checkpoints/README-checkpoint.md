@@ -1,8 +1,8 @@
-# Synthetic-Sport-Player
+# synthSportPlayer Package
 
 Last updated - 3/3/2021
 
-This is a package designed to simulate sports players/teams that compete against each other in a head-to-head elemination tournaments. This was created in support of another project for more information/documentation please see [the github repo.](https://github.com/DrJStrudwick/Synthetic-Sport-Player)
+This is a package designed to simulate sports players/teams that compete against each other in a head-to-head elemination tournaments. This was created in support of another project for more information/documentation please see [the github repo.](https://github.com/DrJStrudwick/Hierarchical-Node-Classification)
 
 Offical fully written documentation shall be coming.
 
