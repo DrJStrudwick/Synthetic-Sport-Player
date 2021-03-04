@@ -27,6 +27,8 @@ A match class to represent to represent two players competing against each other
 Tournaments
 ***********
 
+A class that represents a 1v1 elimination tournament that a collection of players enter and then proceed to compete until there is only one player who has won it all.
+
 .. autoclass:: synthSportPlayer.tournament
    :members:
    :undoc-members:
@@ -34,6 +36,8 @@ Tournaments
 
 Seasons
 *******
+
+A class the represents a season, which is in essence a sequence of tournaments where the players play one after another and collect points based on how far they got. 
 
 .. autoclass:: synthSportPlayer.season
    :members:
