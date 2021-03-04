@@ -34,6 +34,84 @@
             
   <div class="section" id="documentation">
 <h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<p>At this point in time the package contains three primary classes and two child classes which will are documented in this section.</p>
+<div class="section" id="player">
+<h2>Player<a class="headerlink" href="#player" title="Permalink to this headline">¶</a></h2>
+<p>A player class used to represent any sports team/person that will go onto compete in competitions of a classic 1v1 elemination tournament.</p>
+<dl class="py class">
+<dt id="id0">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">player</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd><p>The class that is used to represent a player/team</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>skill</strong> (<em>int</em>) – The underlying skill level that this player has.</p></li>
+<li><p><strong>variance</strong> (<em>int</em>) – The variance that this player has whenever they perform, the smaller this is the more consistent they are.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name/id for the player which can be used as a reference.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>skill</strong> (<em>int</em>) – The skill of the player assigned upon construction.</p></li>
+<li><p><strong>variance</strong> (<em>int</em>) – The variance of the player assigned upon construction.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The skill of the player assigned upon construction.</p></li>
+<li><p><strong>pointRec</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) – A list of the points that a player has earnt from competing in tournaments.</p></li>
+<li><p><strong>totalPoints</strong> (<em>int</em>) – The total value of all the points contained in pointRec.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="player.perform">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">perform</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#player.perform" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method that gets the player to perform and returning a integer value to represent the performance ‘on the day’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns performance</dt>
+<dd class="field-odd"><p>a rounded int that has been sampled from a normal dist. characterised by the players skill and variance.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="player.selfsummary">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">selfsummary</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#player.selfsummary" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method that prints a quick summary of the players variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>printed string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="player.gainPoints">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">gainPoints</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#player.gainPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to add the given points to the players point record.
+If this now contains more than 10 entries it will remove the first record and then update the totalPoints variable with the sum of the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><p><strong>points</strong> (<em>int</em>) – The points that are to be added to the players record.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tournaments">
+<h2>Tournaments<a class="headerlink" href="#tournaments" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="seasons">
+<h2>Seasons<a class="headerlink" href="#seasons" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 
 
@@ -55,7 +133,12 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#player">Player</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tournaments">Tournaments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#seasons">Seasons</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="help.html">Help</a></li>
 </ul>
