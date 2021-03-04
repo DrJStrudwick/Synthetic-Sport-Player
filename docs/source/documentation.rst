@@ -16,9 +16,6 @@ A player class used to represent any sports team/person that will go onto compet
    :param int variance: The variance that this player has whenever they perform, the smaller this is the more consistent they are.
    :param str name: The name/id for the player which can be used as a reference.
 
-   :var int skill: The skill of the player assigned upon construction.
-   :var int variance: The variance of the player assigned upon construction.
-   :var str name: The skill of the player assigned upon construction.
    :var list(int) pointRec: A list of the points that a player has earnt from competing in tournaments.
    :var int totalPoints: The total value of all the points contained in pointRec.
 
@@ -43,8 +40,21 @@ A player class used to represent any sports team/person that will go onto compet
       A method to add the given points to the players point record.
       If this now contains more than 10 entries it will remove the first record and then update the totalPoints variable with the sum of the list.
 
-      :var int points: The points that are to be added to the players record.
-      :rtype: none 
+      :param int points: The points that are to be added to the players record.
+      :rtype: none
+
+Match
+*****
+
+A match class to represent to represent two players competing against each other where one will win and the other loses.
+
+.. py:class:: match(player1,player2)
+
+   The class used to represent a match between two players.
+
+   :param `player` player1: One player involved in the Match.
+   :param `player` player2: The second player involved in the Match.
+
 
 Tournaments
 ***********

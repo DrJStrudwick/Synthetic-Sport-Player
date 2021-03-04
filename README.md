@@ -16,10 +16,11 @@ import synthSportPlayer
 
 Offical fully written documentation shall be coming.
 
-There are 3 primary classes contained within this package:
+There are 4 primary classes contained within this package:
 1. `player` These are the teams/players that do the competeing. They are simply defined by a 'skill' level and a variance and whenever they have to 'compete' that is created from a normal distribution defined by these two properties.
-2. `tournament` This is an event that a collection of players enter and compete pair-wise with the winners moving forward to the next round, and is complete when there is one player remaining.
-3. `season` This is a collection of tournaments that are played in order. at the end of the rounament the players recieve point based on how far they got in tha tournament.
+2. `match` This is a match to handle two player competing where one will win and one will lose. The winner is determine by both players performing and the highest value wins. if they are equal then they
+3. `tournament` This is an event that a collection of players enter and compete pair-wise with the winners moving forward to the next round, and is complete when there is one player remaining.
+4. `season` This is a collection of tournaments that are played in order. at the end of the rounament the players recieve point based on how far they got in tha tournament.
 
 There are two extra child classes that were written to extra both `tournament` and `season` to be able to have 'real-time' functionality for dashboarding purposes. They are:
 1. `liveTourn`
