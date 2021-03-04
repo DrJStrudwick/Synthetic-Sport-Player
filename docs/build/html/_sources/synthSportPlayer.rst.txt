@@ -1,0 +1,21 @@
+synthSportPlayer package
+========================
+
+Submodules
+----------
+
+synthSportPlayer.sportplayer module
+-----------------------------------
+
+.. automodule:: synthSportPlayer.sportplayer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+synthSportPlayer.utils module
+-----------------------------
+
+.. automodule:: synthSportPlayer.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

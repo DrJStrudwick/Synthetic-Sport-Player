@@ -1,0 +1,7 @@
+synthSportPlayer
+================
+
+.. toctree::
+   :maxdepth: 4
+
+   synthSportPlayer
