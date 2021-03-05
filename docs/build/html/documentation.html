@@ -170,29 +170,75 @@
 <p>A player class used to represent any sports team/person that will go onto compete in competitions of a classic 1v1 elemination tournament.</p>
 <dl class="py class">
 <dt id="synthSportPlayer.player">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">player</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.player" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">player</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointLimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.player" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class to model any sports player</p>
+<p>A class to model any sports player/team.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>skill</strong> (<em>int</em>) – The underlying ‘true’ skill of a player</p></li>
+<li><p><strong>variance</strong> (<em>int</em>) – How much the player varies in their performance. The lower this is the more consistent they are in their performance</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The players name/id that will be used as a reference later on</p></li>
+<li><p><strong>pointLimit</strong> (<em>int</em><em>, </em><em>default=10</em>) – The max number of points a player is allowed to keep in the pointRec.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="synthSportPlayer.player.pointRec">
+<code class="sig-name descname"><span class="pre">pointRec</span></code><a class="headerlink" href="#synthSportPlayer.player.pointRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>A record of the points the this player has earnt from a tournament in the order that they earnt them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="synthSportPlayer.player.totalPoints">
+<code class="sig-name descname"><span class="pre">totalPoints</span></code><a class="headerlink" href="#synthSportPlayer.player.totalPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total of all the points in pointRec.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="synthSportPlayer.player.gainPoints">
 <code class="sig-name descname"><span class="pre">gainPoints</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.player.gainPoints" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to update the current points of the player, their total points is based only on the last 10 groups of points they have gained.</p>
-<p>[param points]: int, the points gained by the player</p>
+<dd><p>A method to update the current points of the player.</p>
+<p>The points provided are added to the players point record. If the number of entries in the pointRec is greater than pointLimit,
+then the oldest entry is removed. After this the totalPoint arrtibute is updated with the new total of pointRec.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>points</strong> (<em>int</em>) – Points to be added to the players pointRec.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="synthSportPlayer.player.perform">
 <code class="sig-name descname"><span class="pre">perform</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.player.perform" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function asking the player to perform and returning a numerical value to represent the performance ‘on the day’.
-This is generate from a normal dist. with mean equal to the player skill and var equal to the player variance.</p>
-<p>out:
-[performance]: int, the value representing the player performance on the day</p>
+<dd><p>A method getting the player to perform.</p>
+<p>A numerical value is returned representing the players performance ‘on the day’.
+This is generate from a normal dist. with mean equal to the player skill and var equal to the player variance,
+which is then rounded to the nearest integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>performance</strong> – The value representing the player performance on the day.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="synthSportPlayer.player.selfsummary">
 <code class="sig-name descname"><span class="pre">selfsummary</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.player.selfsummary" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to print out the characteristics of the player.</p>
+<dd><p>A method to print out the characteristics of the player.</p>
 </dd></dl>
 
 </dd></dl>
@@ -205,15 +251,33 @@ This is generate from a normal dist. with mean equal to the player skill and var
 <dt id="synthSportPlayer.match">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">match</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.match" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class to handle the match between two players</p>
+<p>A class to handle the match between two players.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>player1</strong> (<a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><em>player</em></a>) – The first player that is participating in the match.</p></li>
+<li><p><strong>player2</strong> (<a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><em>player</em></a>) – The second player that is participating in the match.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt id="synthSportPlayer.match.playMatch">
 <code class="sig-name descname"><span class="pre">playMatch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.match.playMatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to excute the match.</p>
-<p>out:
-[winner]: player, the player who won the match
-[loser]: player, the player who lost the match
-[matchSummary]: list, the match info for the records</p>
+<dd><p>A method to excute the match between players.</p>
+<p>Both the perform methods of the players are activated and the player with the higher performance score is the winner.
+If the two values are equal, then a winner is randomly chosen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>winner</strong> (<em>player</em>) – The player who won the match</p></li>
+<li><p><strong>loser</strong> (<em>player</em>) – The player who lost the match</p></li>
+<li><p><strong>matchReport</strong> (<em>list</em>) – A list containing the information from the match it has just played out.
+Containing for both players: their name, their total points, their performance value for that match.
+Then finally the name of the player who won.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -227,24 +291,76 @@ This is generate from a normal dist. with mean equal to the player skill and var
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">tournament</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">playerList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointPerRound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.tournament" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class to model a tournament</p>
+<p>The tournament is the classic 1v1 elimination tournament where the winner of a match proceeds through to the next round.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>playerList</strong> (<em>list of players</em>) – A list containg the players who are competing in this tournament.</p></li>
+<li><p><strong>pointPerRound</strong> (<em>int</em><em>, </em><em>default=5</em>) – The number of points that a player earns at each stage that they get to.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="synthSportPlayer.tournament.matchRec">
+<code class="sig-name descname"><span class="pre">matchRec</span></code><a class="headerlink" href="#synthSportPlayer.tournament.matchRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list where the match results are stored when they are completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="synthSportPlayer.tournament.round">
+<code class="sig-name descname"><span class="pre">round</span></code><a class="headerlink" href="#synthSportPlayer.tournament.round" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer used to track what current round the tournament is in.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="synthSportPlayer.tournament.tournRes">
+<code class="sig-name descname"><span class="pre">tournRes</span></code><a class="headerlink" href="#synthSportPlayer.tournament.tournRes" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pandas dataframe that is created and assigned once the tournament is complete containing all the match results, made from the matchRec attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="synthSportPlayer.tournament.playRound">
 <code class="sig-name descname"><span class="pre">playRound</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.tournament.playRound" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to play all the matches in the current round.</p>
-<p>out:
-[nextRound]: list of players, a list of players who won their matches and proceed through to the next round</p>
+<dd><p>A method to play all the matches in the current round.</p>
+<p>This plays out the round with the players that have made it through to the current stage. Each match result is added to the match record,
+and the loser gains points equal to the round where they got to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>nextRound</strong> – A list of players who won their matches and proceed through to the next round</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of players</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="synthSportPlayer.tournament.playTourn">
 <code class="sig-name descname"><span class="pre">playTourn</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.tournament.playTourn" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to play the entire tournament.</p>
+<dd><p>A method to play the entire tournament.</p>
+<p>Activating this method will play out the tournament until there is one player remaining as the winner.
+At which point the final tournament results are created.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="synthSportPlayer.tournament.reset">
 <code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.tournament.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to reset the tournamet to be able to be played again</p>
+<dd><p>A method to reset the tournamet to be able to be played again</p>
 </dd></dl>
 
 </dd></dl>
@@ -258,29 +374,70 @@ This is generate from a normal dist. with mean equal to the player skill and var
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">season</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numPlayers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tournToPlay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">players</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">playerSum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.season" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class to handle a season of tournaments being played.</p>
+<p>A season is a squence of tournaments that are played by a group of players one after another and collect points as they go based
+on performance in each tournament.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numPlayers</strong> (<em>int</em><em>, </em><em>default=16</em>) – The number of players that will be generated to play in this season. This will be overridden if players are provided</p></li>
+<li><p><strong>tournToPlay</strong> (<em>int</em><em>, </em><em>default=20</em>) – The number of tournaments that this season will have,</p></li>
+<li><p><strong>players</strong> (<em>list of players</em><em>, </em><em>default=None</em>) – Optional. If there are pre-existing players that the user wishes to enter into this season. The number of players in the list will override numPlayers.</p></li>
+<li><p><strong>playerSum</strong> (<em>DataFrame</em><em>, </em><em>default=None</em>) – Optional. If the player are being provided externally then their summary data table can be provided for their total point record to be appended to.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="synthSportPlayer.season.week">
+<code class="sig-name descname"><span class="pre">week</span></code><a class="headerlink" href="#synthSportPlayer.season.week" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer to keep track of what week (tournament) is being played out.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="synthSportPlayer.season.tournRecs">
+<code class="sig-name descname"><span class="pre">tournRecs</span></code><a class="headerlink" href="#synthSportPlayer.season.tournRecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list that stores the results from each tournament.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of DataFrames</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="synthSportPlayer.season.export">
 <code class="sig-name descname"><span class="pre">export</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fldr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'seasonData'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.season.export" title="Permalink to this definition">¶</a></dt>
 <dd><p>A function to export the players, the tournament results tables, and the season points table as CSVs.</p>
-<p>[param path]: str, the name to call the folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fldr</strong> (<em>str</em><em>, </em><em>default='seasonData'</em>) – The name to call the folder the results shall be stored in.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="synthSportPlayer.season.gatherPoints">
 <code class="sig-name descname"><span class="pre">gatherPoints</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.season.gatherPoints" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to gather the points players have earnt in the tournament and store it in the record</p>
+<dd><p>A method to gather the total points of players aftern a tournament has been completed. These are store it in the playerSum.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="synthSportPlayer.season.playSeason">
 <code class="sig-name descname"><span class="pre">playSeason</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.season.playSeason" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to play out the season of tournaments</p>
+<dd><p>A method to play out the season of tournaments.</p>
+<p>This method will play all of the tournaments in order, storing tournament results, recording players total points and shuffling the order of players
+inbetween each tournament.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="synthSportPlayer.season.reset">
 <code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.season.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>A function to reset the season. won’t rest the players but resets the week count and the tournament results record.</p>
+<dd><p>A method to reset the season.</p>
+<p>It won’t reset the players but resets the week count and the tournament results record.</p>
 </dd></dl>
 
 </dd></dl>
