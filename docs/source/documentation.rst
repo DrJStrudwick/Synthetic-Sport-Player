@@ -11,7 +11,6 @@ A player class used to represent any sports team/person that will go onto compet
 .. autoclass:: synthSportPlayer.player
    :members:
    :undoc-members:
-   :show-inheritance:
 
 Match
 *****
@@ -21,7 +20,6 @@ A match class to represent to represent two players competing against each other
 .. autoclass:: synthSportPlayer.match
    :members:
    :undoc-members:
-   :show-inheritance:
 
 
 Tournaments
@@ -32,6 +30,10 @@ A class that represents a 1v1 elimination tournament that a collection of player
 .. autoclass:: synthSportPlayer.tournament
    :members:
    :undoc-members:
+   
+.. autoclass:: synthSportPlayer.liveTourn
+   :members:
+   :undoc-members:
    :show-inheritance:
 
 Seasons
@@ -40,6 +42,10 @@ Seasons
 A class the represents a season, which is in essence a sequence of tournaments where the players play one after another and collect points based on how far they got. 
 
 .. autoclass:: synthSportPlayer.season
+   :members:
+   :undoc-members:
+   
+.. autoclass:: synthSportPlayer.liveSeason
    :members:
    :undoc-members:
    :show-inheritance:

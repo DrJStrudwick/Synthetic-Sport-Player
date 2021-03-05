@@ -17,14 +17,14 @@ class player:
     name : str
            The players name/id that will be used as a reference later on
     pointLimit : int, default=10
-                 The max number of points a player is allowed to keep in the pointRec.
+                 The max number of points a player is allowed to keep in the :py:attr:`pointRec`.
     
     Attributes
     ----------
     pointRec : list of int
                A record of the points the this player has earnt from a tournament in the order that they earnt them.
     totalPoints : int
-                  The total of all the points in pointRec.
+                  The total of all the points in :py:attr:`pointRec`.
     """
     def __init__(self,skill,variance,name,pointLimit=10):
         """
@@ -42,7 +42,7 @@ class player:
         A method getting the player to perform.
         
         A numerical value is returned representing the players performance 'on the day'. 
-        This is generate from a normal dist. with mean equal to the player skill and var equal to the player variance, 
+        This is generate from a normal dist. with mean equal to the players skill and var equal to the player variance, 
         which is then rounded to the nearest integer.
         
         Returns
@@ -63,13 +63,13 @@ class player:
         """
         A method to update the current points of the player.
         
-        The points provided are added to the players point record. If the number of entries in the pointRec is greater than pointLimit, 
-        then the oldest entry is removed. After this the totalPoint arrtibute is updated with the new total of pointRec.
+        The points provided are added to the players :py:attr:`pointRec`. If the number of entries in the :py:attr:`pointRec` is greater than pointLimit, 
+        then the oldest entry is removed. After this the :py:attr:`totalPoints` arrtibute is updated with the new total of :py:attr:`pointRec`.
         
         Parameters
         ----------
         points : int
-                 Points to be added to the players pointRec.
+                 Points to be added to the players :py:attr:`pointRec`.
         """
         self.pointRec.append(points)
         if len(self.pointRec)>self.pointLimit:
@@ -78,14 +78,14 @@ class player:
     
 class match:
     """
-    A class to handle the match between two players.
+    A class to handle the match between two :py:class:`player`'s.
     
     Parameters
     ----------
     player1 : player
-              The first player that is participating in the match.
+              The first :py:class:`player` that is participating in the match.
     player2 : player
-              The second player that is participating in the match.
+              The second :py:class:`player` that is participating in the match.
     """
     def __init__(self,player1,player2):
         """
@@ -96,17 +96,17 @@ class match:
     
     def playMatch(self):
         """
-        A method to excute the match between players.
+        A method to excute the match between the two :py:class:`player`'s given to the match.
         
-        Both the perform methods of the players are activated and the player with the higher performance score is the winner. 
+        Both the perform methods of the players are activated and the :py:class:`player` with the higher performance score is the winner. 
         If the two values are equal, then a winner is randomly chosen.
         
         Returns
         -------
         winner : player
-                 The player who won the match
+                 The :py:class:`player` who won the match
         loser : player
-                The player who lost the match
+                The :py:class:`player` who lost the match
         matchReport : list
                       A list containing the information from the match it has just played out. 
                       Containing for both players: their name, their total points, their performance value for that match. 
@@ -131,7 +131,7 @@ class tournament:
     
     Parameters
     ----------
-    playerList : list of players
+    playerList : list of :py:class:`player`
                  A list containg the players who are competing in this tournament.
     pointPerRound : int, default=5
                     The number of points that a player earns at each stage that they get to.
@@ -143,7 +143,7 @@ class tournament:
     round : int
             An integer used to track what current round the tournament is in.
     tournRes : DataFrame
-               A pandas dataframe that is created and assigned once the tournament is complete containing all the match results, made from the matchRec attribute.
+               A pandas dataframe that is created and assigned once the tournament is complete containing all the match results, made from the :py:attr:`matchRec` attribute.
     
     """
     def __init__(self, playerList,pointPerRound=5):
@@ -160,8 +160,8 @@ class tournament:
         """
         A method to play the entire tournament.
         
-        Activating this method will play out the tournament until there is one player remaining as the winner. 
-        At which point the final tournament results are created.
+        Activating this method will play out the tournament until there is one :py:class:`player` remaining as the winner. 
+        At which point the final tournament results are created and stored in :py:attr:`tournRes`.
         """
         while len(self.currentRound)>1:
             nextRound = self.playRound()
@@ -174,7 +174,7 @@ class tournament:
         """
         A method to play all the matches in the current round.
         
-        This plays out the round with the players that have made it through to the current stage. Each match result is added to the match record, 
+        This plays out the round with the players that have made it through to the current stage. Each match result is added to the :py:attr:`matchRec`, 
         and the loser gains points equal to the round where they got to.
         
         Returns
