@@ -13,6 +13,7 @@ setuptools.setup(
     url="https://github.com/DrJStrudwick/Synthetic-Sport-Player",
 	project_urls={
         "Bug Tracker": "https://github.com/DrJStrudwick/Synthetic-Sport-Player/issues",
+		"Documentation":"https://synthetic-sport-player.readthedocs.io/en/latest/index.html"
     },
     classifiers=[
         "Programming Language :: Python :: 3",
