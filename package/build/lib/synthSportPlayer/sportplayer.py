@@ -10,26 +10,35 @@ class player:
     
     Parameters
     ----------
-    skill : int
+    skill : int or float
             The underlying 'true' skill of a player
-    variance : int
+    variance : int or float
                How much the player varies in their performance. The lower this is the more consistent they are in their performance
     name : str
            The players name/id that will be used as a reference later on
-    pointLimit : int, default=10
-                 The max number of points a player is allowed to keep in the pointRec.
+    pointLimit : int, default 10
+                 The max number of points a player is allowed to keep in the :py:attr:`pointRec`.
     
     Attributes
     ----------
     pointRec : list of int
                A record of the points the this player has earnt from a tournament in the order that they earnt them.
     totalPoints : int
-                  The total of all the points in pointRec.
+                  The total of all the points in :py:attr:`pointRec`.
     """
     def __init__(self,skill,variance,name,pointLimit=10):
         """
         The init method of the class.
         """
+        if not((type(skill)==int)|(type(skill)==float)):
+            raise TypeError('Skill must be an int or a float')
+        if not((type(variance)==int)|(type(variance)==float)):
+            raise TypeError('variance must be an int or a float')
+        if type(name)!=str:
+            raise TypeError('name must be a str')
+        if type(pointLimit)!=int:
+            raise TypeError('pointLimit must be an int')
+        
         self.skill = skill
         self.variance = variance
         self.name = name
@@ -42,7 +51,7 @@ class player:
         A method getting the player to perform.
         
         A numerical value is returned representing the players performance 'on the day'. 
-        This is generate from a normal dist. with mean equal to the player skill and var equal to the player variance, 
+        This is generate from a normal dist. with mean equal to the players skill and var equal to the player variance, 
         which is then rounded to the nearest integer.
         
         Returns
@@ -63,14 +72,17 @@ class player:
         """
         A method to update the current points of the player.
         
-        The points provided are added to the players point record. If the number of entries in the pointRec is greater than pointLimit, 
-        then the oldest entry is removed. After this the totalPoint arrtibute is updated with the new total of pointRec.
+        The points provided are added to the players :py:attr:`pointRec`. If the number of entries in the :py:attr:`pointRec` is greater than pointLimit, 
+        then the oldest entry is removed. After this the :py:attr:`totalPoints` arrtibute is updated with the new total of :py:attr:`pointRec`.
         
         Parameters
         ----------
         points : int
-                 Points to be added to the players pointRec.
+                 Points to be added to the players :py:attr:`pointRec`.
         """
+        if type(points)!=int:
+            raise TypeError('points must be an int')
+            
         self.pointRec.append(points)
         if len(self.pointRec)>self.pointLimit:
             self.pointRec.pop(0)
@@ -78,35 +90,40 @@ class player:
     
 class match:
     """
-    A class to handle the match between two players.
+    A class to handle the match between two :py:class:`player`'s.
     
     Parameters
     ----------
     player1 : player
-              The first player that is participating in the match.
+              The first :py:class:`player` that is participating in the match.
     player2 : player
-              The second player that is participating in the match.
+              The second :py:class:`player` that is participating in the match.
     """
     def __init__(self,player1,player2):
         """
         The init function of the class.
         """
+        if type(player1)!=player:
+            raise TypeError('player1 must be a player')
+        if type(player2)!=player:
+            raise TypeError('player2 must be a player')
+            
         self.player1 = player1
         self.player2 = player2
     
     def playMatch(self):
         """
-        A method to excute the match between players.
+        A method to excute the match between the two :py:class:`player`'s given to the match.
         
-        Both the perform methods of the players are activated and the player with the higher performance score is the winner. 
+        Both the perform methods of the players are activated and the :py:class:`player` with the higher performance score is the winner. 
         If the two values are equal, then a winner is randomly chosen.
         
         Returns
         -------
         winner : player
-                 The player who won the match
+                 The :py:class:`player` who won the match
         loser : player
-                The player who lost the match
+                The :py:class:`player` who lost the match
         matchReport : list
                       A list containing the information from the match it has just played out. 
                       Containing for both players: their name, their total points, their performance value for that match. 
@@ -131,9 +148,9 @@ class tournament:
     
     Parameters
     ----------
-    playerList : list of players
+    playerList : list of :py:class:`player`
                  A list containg the players who are competing in this tournament.
-    pointPerRound : int, default=5
+    pointPerRound : int, default 5
                     The number of points that a player earns at each stage that they get to.
                     
     Attributes
@@ -143,13 +160,17 @@ class tournament:
     round : int
             An integer used to track what current round the tournament is in.
     tournRes : DataFrame
-               A pandas dataframe that is created and assigned once the tournament is complete containing all the match results, made from the matchRec attribute.
+               A pandas dataframe that is created and assigned once the tournament is complete containing all the match results, made from the :py:attr:`matchRec` attribute.
     
     """
     def __init__(self, playerList,pointPerRound=5):
         """
         The init function of this class.
         """
+        if not(all(type(n)==player for n in playerList)):
+            raise TypeError("playerList is not a list of only players")
+        if type(pointPerRound)!=int:
+            raise TypeError('pointPerRound must be an int')
         self.currentRound = playerList
         self.points=pointPerRound
         self.matchRec=[]
@@ -160,8 +181,8 @@ class tournament:
         """
         A method to play the entire tournament.
         
-        Activating this method will play out the tournament until there is one player remaining as the winner. 
-        At which point the final tournament results are created.
+        Activating this method will play out the tournament until there is one :py:class:`player` remaining as the winner. 
+        At which point the final tournament results are created and stored in :py:attr:`tournRes`.
         """
         while len(self.currentRound)>1:
             nextRound = self.playRound()
@@ -174,7 +195,7 @@ class tournament:
         """
         A method to play all the matches in the current round.
         
-        This plays out the round with the players that have made it through to the current stage. Each match result is added to the match record, 
+        This plays out the round with the players that have made it through to the current stage. Each match result is added to the :py:attr:`matchRec`, 
         and the loser gains points equal to the round where they got to.
         
         Returns
@@ -209,9 +230,9 @@ def generatePlayers(number,maxSkill=100,var=10):
     ----------
     number : int
              The number of players that are to be created.
-    maxSkill : int, default=100
+    maxSkill : int or float, default 100
                The max skill that a player can have.
-    var : int, default=10
+    var : int or float, default 10
           The variance to give to each player.
              
     Returns
@@ -221,15 +242,46 @@ def generatePlayers(number,maxSkill=100,var=10):
     playerInfo : DataFrame
                  A table with information about the players created.
     """
+    if type(number)!=int:
+        raise TypeError('number must be an int')
+    if not((type(maxSkill)==int)|(type(maxSkill)==float)):
+        raise TypeError('maxSkill must be an int or a float')
+    if not((type(var)==int)|(type(var)==float)):
+        raise TypeError('var must be an int or a float')
+    
     playerList = []
     playerinfo = []
     for i in range(0,number):
         skill = randint(1,maxSkill)
         playerList.append(player(skill,var, str(i)))
-        playerinfo.append([str(i),skill,var])
-    playerinfo = pd.DataFrame(playerinfo,columns=["name","skill","variance"])
+        playerinfo.append([str(i),skill,var,0])
+    playerinfo = pd.DataFrame(playerinfo,columns=["name","skill","variance","week_-1"])
     playerinfo.sort_values("skill",ascending=False,inplace=True)
     return playerList, playerinfo
+
+
+def fetchPlayerSummary(playerList):
+    """
+    A function to generate a player summary table.
+    
+    Given a list of players this will generate a pandas table with the players summary.
+    
+    Parameters
+    ----------
+    playerList : list of player
+                 A list of players whose summary wants to be fetched
+                 
+    Returns
+    -------
+    playerinfo : DataFrame
+                 A data frame containg the summary information of all the players provided.
+    """
+    playerinfo = []
+    for player in playerList:
+        playerinfo.append([player.name,player.skill,player.variance,player.totalPoints])
+    playerinfo = pd.DataFrame(playerinfo,columns=["name","skill","variance","week_-1"])
+    playerinfo.sort_values("skill",ascending=False,inplace=True)
+    return playerinfo
 
 class season:
     """
@@ -240,13 +292,13 @@ class season:
     
     Parameters
     ----------
-    numPlayers : int, default=16
+    numPlayers : int, default 16
                  The number of players that will be generated to play in this season. This will be overridden if players are provided
-    tournToPlay : int, default=20
+    tournToPlay : int, default 20
                   The number of tournaments that this season will have,
-    players : list of players, default=None
+    players : list of players, default None
               Optional. If there are pre-existing players that the user wishes to enter into this season. The number of players in the list will override numPlayers. 
-    playerSum : DataFrame, default=None
+    playerSum : DataFrame, default None
                 Optional. If the player are being provided externally then their summary data table can be provided for their total point record to be appended to.
     
     Attributes
@@ -260,6 +312,17 @@ class season:
         """
         The init method of this class.
         """
+        if type(numPlayers)!=int:
+            raise TypeError('numPlayers must be an int')
+        if type(tournToPlay)!= int:
+            raise TypeError('tournToPlay must be an int')
+        if players!=None:
+            if not(all(type(n)==player for n in players)):
+                raise TypeError("playerList is not a list of only players")
+        if playerSum!=None:
+            if not(type(playerSum)==pd.core.frame.DataFrame):
+                raise TypeError("playerSum must be a pandas dataframe")
+        
         self.tournsToPlay = tournToPlay
         self.week=0
         self.tournRecs=[]
@@ -269,7 +332,11 @@ class season:
         else:
             self.numPlayers = len(players)
             self.players = players
-            self.playerSum = playerSum
+            
+            if playerSum==None:
+                self.playerSum = fetchPlayerSummary(players)
+            else:
+                self.playerSum = playerSum
     
     def playSeason(self):
         """
@@ -313,9 +380,11 @@ class season:
         
         Parameters
         ----------
-        fldr : str, default='seasonData'
+        fldr : str, default 'seasonData'
                The name to call the folder the results shall be stored in.
         """
+        if type(fldr)!=str:
+            raise TypeError("fldr must be a str")
         if fldr in [x for x in os.listdir() if os.path.isdir(x)]:
             pass
         else:

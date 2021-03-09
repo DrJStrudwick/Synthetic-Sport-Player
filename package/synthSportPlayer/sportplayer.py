@@ -10,13 +10,13 @@ class player:
     
     Parameters
     ----------
-    skill : int
+    skill : int or float
             The underlying 'true' skill of a player
-    variance : int
+    variance : int or float
                How much the player varies in their performance. The lower this is the more consistent they are in their performance
     name : str
            The players name/id that will be used as a reference later on
-    pointLimit : int, default=10
+    pointLimit : int, default 10
                  The max number of points a player is allowed to keep in the :py:attr:`pointRec`.
     
     Attributes
@@ -30,6 +30,15 @@ class player:
         """
         The init method of the class.
         """
+        if not((type(skill)==int)|(type(skill)==float)):
+            raise TypeError('Skill must be an int or a float')
+        if not((type(variance)==int)|(type(variance)==float)):
+            raise TypeError('variance must be an int or a float')
+        if type(name)!=str:
+            raise TypeError('name must be a str')
+        if type(pointLimit)!=int:
+            raise TypeError('pointLimit must be an int')
+        
         self.skill = skill
         self.variance = variance
         self.name = name
@@ -71,6 +80,9 @@ class player:
         points : int
                  Points to be added to the players :py:attr:`pointRec`.
         """
+        if type(points)!=int:
+            raise TypeError('points must be an int')
+            
         self.pointRec.append(points)
         if len(self.pointRec)>self.pointLimit:
             self.pointRec.pop(0)
@@ -91,6 +103,11 @@ class match:
         """
         The init function of the class.
         """
+        if type(player1)!=player:
+            raise TypeError('player1 must be a player')
+        if type(player2)!=player:
+            raise TypeError('player2 must be a player')
+            
         self.player1 = player1
         self.player2 = player2
     
@@ -133,7 +150,7 @@ class tournament:
     ----------
     playerList : list of :py:class:`player`
                  A list containg the players who are competing in this tournament.
-    pointPerRound : int, default=5
+    pointPerRound : int, default 5
                     The number of points that a player earns at each stage that they get to.
                     
     Attributes
@@ -150,6 +167,10 @@ class tournament:
         """
         The init function of this class.
         """
+        if not(all(type(n)==player for n in playerList)):
+            raise TypeError("playerList is not a list of only players")
+        if type(pointPerRound)!=int:
+            raise TypeError('pointPerRound must be an int')
         self.currentRound = playerList
         self.points=pointPerRound
         self.matchRec=[]
@@ -209,9 +230,9 @@ def generatePlayers(number,maxSkill=100,var=10):
     ----------
     number : int
              The number of players that are to be created.
-    maxSkill : int, default=100
+    maxSkill : int or float, default 100
                The max skill that a player can have.
-    var : int, default=10
+    var : int or float, default 10
           The variance to give to each player.
              
     Returns
@@ -221,15 +242,46 @@ def generatePlayers(number,maxSkill=100,var=10):
     playerInfo : DataFrame
                  A table with information about the players created.
     """
+    if type(number)!=int:
+        raise TypeError('number must be an int')
+    if not((type(maxSkill)==int)|(type(maxSkill)==float)):
+        raise TypeError('maxSkill must be an int or a float')
+    if not((type(var)==int)|(type(var)==float)):
+        raise TypeError('var must be an int or a float')
+    
     playerList = []
     playerinfo = []
     for i in range(0,number):
         skill = randint(1,maxSkill)
         playerList.append(player(skill,var, str(i)))
-        playerinfo.append([str(i),skill,var])
-    playerinfo = pd.DataFrame(playerinfo,columns=["name","skill","variance"])
+        playerinfo.append([str(i),skill,var,0])
+    playerinfo = pd.DataFrame(playerinfo,columns=["name","skill","variance","week_-1"])
     playerinfo.sort_values("skill",ascending=False,inplace=True)
     return playerList, playerinfo
+
+
+def fetchPlayerSummary(playerList):
+    """
+    A function to generate a player summary table.
+    
+    Given a list of players this will generate a pandas table with the players summary.
+    
+    Parameters
+    ----------
+    playerList : list of player
+                 A list of players whose summary wants to be fetched
+                 
+    Returns
+    -------
+    playerinfo : DataFrame
+                 A data frame containg the summary information of all the players provided.
+    """
+    playerinfo = []
+    for player in playerList:
+        playerinfo.append([player.name,player.skill,player.variance,player.totalPoints])
+    playerinfo = pd.DataFrame(playerinfo,columns=["name","skill","variance","week_-1"])
+    playerinfo.sort_values("skill",ascending=False,inplace=True)
+    return playerinfo
 
 class season:
     """
@@ -240,13 +292,13 @@ class season:
     
     Parameters
     ----------
-    numPlayers : int, default=16
+    numPlayers : int, default 16
                  The number of players that will be generated to play in this season. This will be overridden if players are provided
-    tournToPlay : int, default=20
+    tournToPlay : int, default 20
                   The number of tournaments that this season will have,
-    players : list of players, default=None
+    players : list of players, default None
               Optional. If there are pre-existing players that the user wishes to enter into this season. The number of players in the list will override numPlayers. 
-    playerSum : DataFrame, default=None
+    playerSum : DataFrame, default None
                 Optional. If the player are being provided externally then their summary data table can be provided for their total point record to be appended to.
     
     Attributes
@@ -260,6 +312,17 @@ class season:
         """
         The init method of this class.
         """
+        if type(numPlayers)!=int:
+            raise TypeError('numPlayers must be an int')
+        if type(tournToPlay)!= int:
+            raise TypeError('tournToPlay must be an int')
+        if players!=None:
+            if not(all(type(n)==player for n in players)):
+                raise TypeError("playerList is not a list of only players")
+        if playerSum!=None:
+            if not(type(playerSum)==pd.core.frame.DataFrame):
+                raise TypeError("playerSum must be a pandas dataframe")
+        
         self.tournsToPlay = tournToPlay
         self.week=0
         self.tournRecs=[]
@@ -269,7 +332,11 @@ class season:
         else:
             self.numPlayers = len(players)
             self.players = players
-            self.playerSum = playerSum
+            
+            if playerSum==None:
+                self.playerSum = fetchPlayerSummary(players)
+            else:
+                self.playerSum = playerSum
     
     def playSeason(self):
         """
@@ -313,9 +380,11 @@ class season:
         
         Parameters
         ----------
-        fldr : str, default='seasonData'
+        fldr : str, default 'seasonData'
                The name to call the folder the results shall be stored in.
         """
+        if type(fldr)!=str:
+            raise TypeError("fldr must be a str")
         if fldr in [x for x in os.listdir() if os.path.isdir(x)]:
             pass
         else:

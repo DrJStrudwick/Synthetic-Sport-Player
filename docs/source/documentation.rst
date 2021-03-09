@@ -49,3 +49,16 @@ A class the represents a season, which is in essence a sequence of tournaments w
    :members:
    :undoc-members:
    :show-inheritance:
+
+Ultilities
+**********
+
+These functions are ultility functions designed to help with any analysis to be done.
+
+.. autofunction:: synthSportPlayer.generatePlayers
+
+.. autofunction:: synthSportPlayer.fetchPlayerSummary
+
+.. autofunction:: synthSportPlayer.getPlayerHist
+
+.. autofunction:: synthSportPlayer.getMatchUpData

@@ -15,6 +15,11 @@ def getPlayerHist(pid,df):
     pid_df : DataFrame
              A DataFrame that contains match results that the given player has participated in.
     """
+    if type(pid)!=str:
+        raise TypeError("pid must be a str")
+    if type(df)!=pd.core.frame.DataFrame:
+        raise TypeError("df must be a pandas dataframe")
+        
     tk1='player1'
     tk2='player2'
     other = [x for x in list(df.columns) if not("_" in x)]
@@ -53,6 +58,13 @@ def getMatchUpData(pid1,pid2,df):
     mu_df : DataFrame
              A DataFrame that contains match results that the two player has participated in against each other.
     """
+    if type(pid1)!=str:
+        raise TypeError("pid1 must be a str")
+    if type(pid2)!=str:
+        raise TypeError("pid2 must be a str")
+    if type(df)!=pd.core.frame.DataFrame:
+        raise TypeError("df must be a pandas dataframe")
+        
     mu_df = df[((df["player1_id"]==pid1)&(df["player2_id"]==pid2)|(df["player1_id"]==pid2)&(df["player2_id"]==pid1))]
     mu_df.sort_values(by=["Tourn","Round","Match"],ascending=[False,False,True],inplace=True)
     return mu_df
