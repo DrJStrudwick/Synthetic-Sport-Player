@@ -1,5 +1,5 @@
 # synthSportPlayer Package
-Last updated - 5/3/2021
+Last updated - 10/3/2021
 
 The purpose of the code within this package is to simulate sports players/teams that compete against each other in a classic 1v1 elimination tournaments.
 Originally the classes & code were created in support of another project but grew larger than expected and therefore large enough to become it own package.
@@ -18,8 +18,6 @@ and import with:
 ```
 import synthSportPlayer
 ```
-
-Offical fully written documentation shall be coming.
 
 There are 4 primary classes contained within this package:
 1. `player` These are the teams/players that do the competeing. They are simply defined by a 'skill' level and a variance and whenever they have to 'compete' that is created from a normal distribution defined by these two properties.
