@@ -3,6 +3,7 @@ import pandas as pd
 from random import shuffle
 import pickle
 import os
+import names
 
 class player:
     """
@@ -135,8 +136,21 @@ class tournament:
         self.matchRec=[]
         self.round=1
         self.tournRes=None
+<<<<<<< Updated upstream
         
 def generatePlayers(number):
+=======
+
+def generateNames(num):
+    genNames=[]
+    while len(genNames)<num:
+        x= names.get_full_name()
+        if not(x in genNames):
+            genNames.append(x)
+    return genNames        
+
+def generatePlayers(number,maxSkill=100,var=10):
+>>>>>>> Stashed changes
     """
     A function to generate a numbers of players.
     
@@ -146,12 +160,20 @@ def generatePlayers(number):
     """
     playerList = []
     playerinfo = []
+    genNames = generateNames(number)
     for i in range(0,number):
+<<<<<<< Updated upstream
         skill = randint(1,100)
         var=10
         playerList.append(player(skill,var, str(i)))
         playerinfo.append([str(i),skill,var])
     playerinfo = pd.DataFrame(playerinfo,columns=["name","skill","variance"])
+=======
+        skill = randint(1,maxSkill)
+        playerList.append(player(skill,var, genNames[i]))
+        playerinfo.append([genNames[i],skill,var,0])
+    playerinfo = pd.DataFrame(playerinfo,columns=["name","skill","variance","week_-1"])
+>>>>>>> Stashed changes
     playerinfo.sort_values("skill",ascending=False,inplace=True)
     return playerList, playerinfo
 
