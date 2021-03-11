@@ -1,4 +1,6 @@
 from numpy.random import normal, randint, rand
+from numpy import log2
+from math import ceil
 import pandas as pd
 from random import shuffle
 import pickle
@@ -57,16 +59,16 @@ class player:
         Returns
         -------
         performance : int
-                      The value representing the player performance on the day.
+                      The value representing the player performance on the day, which is greater than or equal to 0.
         """
-        return round(normal(self.skill,self.variance))
+        return max(round(normal(self.skill,self.variance)),0)
     
     def selfsummary(self):
         """
         A method to print out the characteristics of the player.
         """
-        outstr = "Name: {}\nSkill: {}\nVar: {}"
-        print(outstr.format(self.name,self.skill,self.variance))
+        outstr = "Name: {}\nSkill: {}\nVar: {}\nPoint Record: {}\nTotal points: {}\nPoint limit: {}"
+        print(outstr.format(self.name,self.skill,self.variance,self.pointRec,self.totalPoints,self.pointLimit))
         
     def gainPoints(self,points):
         """
@@ -90,39 +92,39 @@ class player:
     
 class match:
     """
-    A class to handle the match between two :py:class:`player`'s.
+    A class to handle the match between two :py:class:`player`'s or any :py:class:`bye`.
     
     Parameters
     ----------
-    player1 : player
-              The first :py:class:`player` that is participating in the match.
-    player2 : player
-              The second :py:class:`player` that is participating in the match.
+    player1 : player or bye
+              The first :py:class:`player` or :py:class:`bye` that is participating in the match.
+    player2 : player or bye
+              The second :py:class:`player` or :py:class:`bye` that is participating in the match.
     """
     def __init__(self,player1,player2):
         """
         The init function of the class.
         """
-        if type(player1)!=player:
-            raise TypeError('player1 must be a player')
-        if type(player2)!=player:
-            raise TypeError('player2 must be a player')
+        if not((type(player1)==player)|(type(player1)==bye)):
+            raise TypeError('player1 must be a player or a bye')
+        if not((type(player2)==player)|(type(player2)==bye)):
+            raise TypeError('player2 must be a player or a bye')
             
         self.player1 = player1
         self.player2 = player2
     
     def playMatch(self):
         """
-        A method to excute the match between the two :py:class:`player`'s given to the match.
+        A method to excute the match between the two player's given to the match.
         
         Both the perform methods of the players are activated and the :py:class:`player` with the higher performance score is the winner. 
-        If the two values are equal, then a winner is randomly chosen.
+        If the two values are equal, then a winner is randomly chosen. If the match is a player vs a bye then the player automatically wins
         
         Returns
         -------
-        winner : player
-                 The :py:class:`player` who won the match
-        loser : player
+        winner : player or bye
+                 The :py:class:`player` who won the match. A :py:class:`bye` is only returned if the match is between 2 byes.
+        loser : player or bye
                 The :py:class:`player` who lost the match
         matchReport : list
                       A list containing the information from the match it has just played out. 
@@ -149,7 +151,8 @@ class tournament:
     Parameters
     ----------
     playerList : list of :py:class:`player`
-                 A list containg the players who are competing in this tournament.
+                 A list containg the players who are competing in this tournament. If this is not a power of 2 then byes will be added 
+                 to make up the numbers then then the list of players shuffled.
     pointPerRound : int, default 5
                     The number of points that a player earns at each stage that they get to.
                     
@@ -171,7 +174,12 @@ class tournament:
             raise TypeError("playerList is not a list of only players")
         if type(pointPerRound)!=int:
             raise TypeError('pointPerRound must be an int')
+            
         self.currentRound = playerList
+        if not(log2(len(self.currentRound)).is_integer()):
+            self.currentRound+=[bye() for i in range(0,(2**ceil(log2(len(self.currentRound)))-len(self.currentRound)))]
+            shuffle(self.currentRound)
+        
         self.points=pointPerRound
         self.matchRec=[]
         self.round=1
@@ -190,6 +198,7 @@ class tournament:
             self.round+=1
         self.currentRound[0].gainPoints(self.round*self.points)
         self.tournRes = pd.DataFrame(self.matchRec,columns=["Round", "Match","player1_id","player1_rnkPoints","player1_perform","player2_id","player2_rnkPoints","player2_perform","winner_id"])
+        
         
     def playRound(self):
         """
@@ -214,7 +223,7 @@ class tournament:
     
     def reset(self):
         """
-        A method to reset the tournamet to be able to be played again
+        A method to reset the tournament to be able to be played again.
         """
         self.matchRec=[]
         self.round=1
@@ -290,6 +299,10 @@ class season:
     A season is a squence of tournaments that are played by a group of players one after another and collect points as they go based 
     on performance in each tournament.
     
+    Notes
+    -----
+    At this points the seasons automatically use :py:class:`tournament` and does not work with :py:class:`robin`
+    
     Parameters
     ----------
     numPlayers : int, default 16
@@ -307,6 +320,8 @@ class season:
            An integer to keep track of what week (tournament) is being played out.
     tournRecs : list of DataFrames
                 A list that stores the results from each tournament.
+    seasonRes : Dataframe, default None
+                A pandas dataframe with all of the tournament results concatenated into one dataframe, which is done upon season completion.
     """
     def __init__(self,numPlayers=16,tournToPlay=20, players=None, playerSum=None):
         """
@@ -326,6 +341,7 @@ class season:
         self.tournsToPlay = tournToPlay
         self.week=0
         self.tournRecs=[]
+        self.seasonRes=None
         if players == None:
             self.numPlayers = numPlayers
             self.players, self.playerSum = generatePlayers(self.numPlayers)
@@ -352,8 +368,11 @@ class season:
             tourn = tournament(self.players)
             tourn.playTourn()
             self.gatherPoints()
+            tourn.tournRes["Tourn"] = self.week
             self.tournRecs.append(tourn.tournRes)
             self.week+=1
+            self.players = [x for x in self.players if type(x)==player]
+        self.seasonRes = pd.concat(self.tournRecs)
     
     def reset(self):
         """
@@ -398,8 +417,7 @@ class season:
         
         self.playerSum.to_csv(fldr+"/seasonPoints.csv",index=False)
         
-        
-
+    
 class liveTourn(tournament):
     """
     A class to facilitate live dashboarding of a season/tournament being played
@@ -467,6 +485,7 @@ class liveSeason(season):
                    A boolean indicating if the season is completed or not.
         """
         if self.week == self.tournsToPlay:
+            self.seasonRes = pd.concat(self.tournRecs)
             return True
         else:
             if self.currentTournComplete:
@@ -476,7 +495,142 @@ class liveSeason(season):
             self.currentTournComplete = self.currentTourn.playTourn()
             if self.currentTournComplete:
                 self.gatherPoints()
+                self.currentTourn.tournRes["Tourn"] = self.week
                 self.tournRecs.append(self.currentTourn.tournRes)
                 self.week+=1
+                self.players = [x for x in self.players if type(x)==player]
             return False
             
+class robin:
+    """
+    A class to model a round robin tournament.
+    
+    A round robin is a variation on a tournament setting where all the players play against each other. 
+    The winner is normally the one with the most matches. If there's any a draw it then goes to their win difference. 
+    
+    Parameters
+    ----------
+    playerList : list of player
+                 The players who are to play in this this round robin. If there is an odd number of players, a :py:class:`bye` will be added in.
+    pointPerWin : int, default 5
+                  The number of points that players will recieve at the end of the tournament for each win.
+    
+    Attributes
+    ----------
+    numPlayers : int
+                 The number of players that are competing in this round robin.
+    matchRec :  list of list
+                A list where the match results are stored when they are completed.
+    round : int
+            An integer used to track what current round the tournament is in.
+    tournRec : DataFrame
+               A pandas dataframe that is created and assigned once the tournament is complete containing all the match results, made from the :py:attr:`matchRec` attribute.
+    winLossRec : DataFrame
+                 A pandas dataframe containing the number of wins, losses and the winning point difference for each player
+    """
+    def __init__(self,playerList,pointPerWin=5):
+        """
+        The init function of the class.
+        """
+        if not(all(type(n)==player for n in playerList)):
+            raise TypeError("playerList is not a list of only players")
+        if type(pointPerWin)!=int:
+            raise TypeError('pointPerWin must be an int')
+        
+        self.playerList = playerList
+        self.pointPerWin = pointPerWin
+        self.numPlayers = len(self.playerList)
+        if (self.numPlayers%2)!=0:
+            self.playerList.append(bye())
+            self.numPlayers+=1
+        self.matchRec=[]
+        self.tournRes=None
+        self.round=1
+        
+        names=[]
+        for py in self.playerList:
+            names.append([py.name,0,0,0])
+        self.winLossRec = pd.DataFrame(names,columns=["Player","Wins","Losses","Diff"])
+        self.winLossRec.set_index("Player",inplace=True)
+        
+    def permute(self):
+        """
+        Permute the order of the players for the next round of the round robin.
+        
+        For a round robin you have to permute the players in a certain way to make everyone play everyone else.
+        """
+        self.playerList = [self.playerList[0]]+self.playerList[2:]+[self.playerList[1]]
+        
+    def playRound(self):
+        """
+        A method to play all the matches in the current round.
+        
+        This plays out the round with the players against their allocated opponent for the current round. 
+        Each match result is added to the :py:attr:`matchRec`, and the :py:attr:`winLossRec` is updated with the results, 
+        unless it is against a :py:class:`bye`
+        """
+        matchNum = 1 
+        for i in range(0,self.numPlayers//2):
+            p1=self.playerList[i]
+            p2=self.playerList[(self.numPlayers)-i-1]
+            currentMatch=match(p1,p2)
+            winner,loser,res = currentMatch.playMatch()
+            if type(loser)!=bye:
+                self.winLossRec.loc[winner.name,"Wins"]+=1
+                self.winLossRec.loc[winner.name,"Diff"]+=abs(res[2]-res[5])
+                self.winLossRec.loc[loser.name,"Losses"]+=1
+            
+            self.matchRec.append([self.round,matchNum]+res)
+            matchNum+=1
+        self.round+=1
+    
+    def playTourn(self):
+        """
+        A method to play the entire tournament.
+        
+        Activating this method will play out the tournament until every :py:class:`player` has played everyother :py:class:`player`. 
+        At which point the final tournament results are created and stored in :py:attr:`tournRec`. Points are then given to the players in 
+        accordance with how many matches they won.
+        """
+        while self.round<self.numPlayers:
+            self.playRound()
+            self.permute()
+        self.tournRes = pd.DataFrame(self.matchRec,columns=["Round", "Match","player1_id","player1_rnkPoints","player1_perform","player2_id","player2_rnkPoints","player2_perform","winner_id"])
+        self.winLossRec.sort_values(by=["Wins","Diff"],ascending=[False,False],inplace=True)
+        self.distributePoints()
+        
+    def distributePoints(self):
+        """
+        A method to distribute the points.
+        
+        For each match a player has won, the value that is stored in the corresponding entry of :py:attr:`winLossRec`, they will gain points equal 
+        to :py:attr:`pointPerWin`.
+        """
+        for py in self.playerList:
+            py.gainPoints(int(self.winLossRec.loc[py.name,"Wins"])*self.pointPerWin)
+    
+    def reset(self):
+        """
+        A method to reset the tournament.
+        """
+        self.matchRec=[]
+        self.tournRes=None
+        self.round=1
+        
+        names=[]
+        for py in self.playerList:
+            names.append([py.name,0,0,0])
+        self.winLossRec = pd.DataFrame(names,columns=["Player","Wins","Losses","Diff"])
+        self.winLossRec.set_index("Player",inplace=True)
+            
+class bye(player):
+    """
+    A class to model a bye.
+    
+    In some tournaments there are not enough player, so the empty spots are filled up with a bye. Whenever a player is against a bye they automatically win.
+    """
+    def __init__(self):
+        super().__init__(-1,0,"Bye",0)
+    
+    def perform(self):
+        return self.skill

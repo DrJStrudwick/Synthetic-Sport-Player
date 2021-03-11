@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="synthSportPlayer-DJS", 
-    version="1.1.2",
+    version="1.2.0",
     author="Dr J Strudwick",
     description="A package to simulate synthetic sports players/teams",
     long_description=long_description,

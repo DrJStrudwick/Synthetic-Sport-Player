@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Documentation &mdash; Synthetic-Sport-Player 1.1.0 documentation</title>
+  <title>Documentation &mdash; Synthetic-Sport-Player 1.2.0 documentation</title>
   
 
   
@@ -91,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#match">Match</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tournaments">Tournaments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#seasons">Seasons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ultilities">Ultilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -167,7 +168,7 @@
 <p>At this point in time the package contains four primary classes and two child classes which will are documented in this section.</p>
 <div class="section" id="player">
 <h2>Player<a class="headerlink" href="#player" title="Permalink to this headline">¶</a></h2>
-<p>A player class used to represent any sports team/person that will go onto compete in competitions of a classic 1v1 elemination tournament.</p>
+<p>A player class used to represent any sports team/person that will go onto compete in competitions of a classic 1v1 elemination tournament. A subclass <code class="xref py py-class docutils literal notranslate"><span class="pre">bye</span></code> exists to models byes, for the situations where there are not enough players for the format and so byes can be added.</p>
 <dl class="py class">
 <dt id="synthSportPlayer.player">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">player</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointLimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.player" title="Permalink to this definition">¶</a></dt>
@@ -175,10 +176,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>skill</strong> (<em>int</em>) – The underlying ‘true’ skill of a player</p></li>
-<li><p><strong>variance</strong> (<em>int</em>) – How much the player varies in their performance. The lower this is the more consistent they are in their performance</p></li>
+<li><p><strong>skill</strong> (<em>int</em><em> or </em><em>float</em>) – The underlying ‘true’ skill of a player</p></li>
+<li><p><strong>variance</strong> (<em>int</em><em> or </em><em>float</em>) – How much the player varies in their performance. The lower this is the more consistent they are in their performance</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – The players name/id that will be used as a reference later on</p></li>
-<li><p><strong>pointLimit</strong> (<em>int</em><em>, </em><em>default=10</em>) – The max number of points a player is allowed to keep in the <a class="reference internal" href="#synthSportPlayer.player.pointRec" title="synthSportPlayer.player.pointRec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pointRec</span></code></a>.</p></li>
+<li><p><strong>pointLimit</strong> (<em>int</em><em>, </em><em>default 10</em>) – The max number of points a player is allowed to keep in the <a class="reference internal" href="#synthSportPlayer.player.pointRec" title="synthSportPlayer.player.pointRec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pointRec</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -226,7 +227,7 @@ This is generate from a normal dist. with mean equal to the players skill and va
 which is then rounded to the nearest integer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>performance</strong> – The value representing the player performance on the day.</p>
+<dd class="field-odd"><p><strong>performance</strong> – The value representing the player performance on the day, which is greater than or equal to 0.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>int</p>
@@ -242,6 +243,31 @@ which is then rounded to the nearest integer.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt id="synthSportPlayer.bye">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">bye</span></code><a class="headerlink" href="#synthSportPlayer.bye" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">synthSportPlayer.sportplayer.player</span></code></p>
+<p>A class to model a bye.</p>
+<p>In some tournaments there are not enough player, so the empty spots are filled up with a bye. Whenever a player is against a bye they automatically win.</p>
+<dl class="py method">
+<dt id="synthSportPlayer.bye.perform">
+<code class="sig-name descname"><span class="pre">perform</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.bye.perform" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method getting the player to perform.</p>
+<p>A numerical value is returned representing the players performance ‘on the day’.
+This is generate from a normal dist. with mean equal to the players skill and var equal to the player variance,
+which is then rounded to the nearest integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>performance</strong> – The value representing the player performance on the day, which is greater than or equal to 0.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="match">
 <h2>Match<a class="headerlink" href="#match" title="Permalink to this headline">¶</a></h2>
@@ -249,26 +275,26 @@ which is then rounded to the nearest integer.</p>
 <dl class="py class">
 <dt id="synthSportPlayer.match">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">match</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.match" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class to handle the match between two <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a>’s.</p>
+<dd><p>A class to handle the match between two <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a>’s or any <a class="reference internal" href="#synthSportPlayer.bye" title="synthSportPlayer.bye"><code class="xref py py-class docutils literal notranslate"><span class="pre">bye</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>player1</strong> (<a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><em>player</em></a>) – The first <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> that is participating in the match.</p></li>
-<li><p><strong>player2</strong> (<a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><em>player</em></a>) – The second <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> that is participating in the match.</p></li>
+<li><p><strong>player1</strong> (<a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><em>player</em></a><em> or </em><a class="reference internal" href="#synthSportPlayer.bye" title="synthSportPlayer.bye"><em>bye</em></a>) – The first <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> or <a class="reference internal" href="#synthSportPlayer.bye" title="synthSportPlayer.bye"><code class="xref py py-class docutils literal notranslate"><span class="pre">bye</span></code></a> that is participating in the match.</p></li>
+<li><p><strong>player2</strong> (<a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><em>player</em></a><em> or </em><a class="reference internal" href="#synthSportPlayer.bye" title="synthSportPlayer.bye"><em>bye</em></a>) – The second <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> or <a class="reference internal" href="#synthSportPlayer.bye" title="synthSportPlayer.bye"><code class="xref py py-class docutils literal notranslate"><span class="pre">bye</span></code></a> that is participating in the match.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="synthSportPlayer.match.playMatch">
 <code class="sig-name descname"><span class="pre">playMatch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.match.playMatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>A method to excute the match between the two <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a>’s given to the match.</p>
+<dd><p>A method to excute the match between the two player’s given to the match.</p>
 <p>Both the perform methods of the players are activated and the <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> with the higher performance score is the winner.
-If the two values are equal, then a winner is randomly chosen.</p>
+If the two values are equal, then a winner is randomly chosen. If the match is a player vs a bye then the player automatically wins</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><ul class="simple">
-<li><p><strong>winner</strong> (<em>player</em>) – The <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> who won the match</p></li>
-<li><p><strong>loser</strong> (<em>player</em>) – The <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> who lost the match</p></li>
+<li><p><strong>winner</strong> (<em>player or bye</em>) – The <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> who won the match. A <a class="reference internal" href="#synthSportPlayer.bye" title="synthSportPlayer.bye"><code class="xref py py-class docutils literal notranslate"><span class="pre">bye</span></code></a> is only returned if the match is between 2 byes.</p></li>
+<li><p><strong>loser</strong> (<em>player or bye</em>) – The <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> who lost the match</p></li>
 <li><p><strong>matchReport</strong> (<em>list</em>) – A list containing the information from the match it has just played out.
 Containing for both players: their name, their total points, their performance value for that match.
 Then finally the name of the player who won.</p></li>
@@ -283,7 +309,7 @@ Then finally the name of the player who won.</p></li>
 </div>
 <div class="section" id="tournaments">
 <h2>Tournaments<a class="headerlink" href="#tournaments" title="Permalink to this headline">¶</a></h2>
-<p>A class that represents a 1v1 elimination tournament that a collection of players enter and then proceed to compete until there is only one player who has won it all.</p>
+<p>Classes that represents a tournament that a collection of players enter and then proceed to compete until there is only one player who has won it all. Here we have two main classes <code class="xref py py-class docutils literal notranslate"><span class="pre">tournament</span></code> which model 1v1 elimination tournaments. the other <code class="xref py py-class docutils literal notranslate"><span class="pre">robin</span></code> which models Round bin tournaments.</p>
 <dl class="py class">
 <dt id="synthSportPlayer.tournament">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">tournament</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">playerList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointPerRound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.tournament" title="Permalink to this definition">¶</a></dt>
@@ -292,8 +318,9 @@ Then finally the name of the player who won.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>playerList</strong> (list of <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a>) – A list containg the players who are competing in this tournament.</p></li>
-<li><p><strong>pointPerRound</strong> (<em>int</em><em>, </em><em>default=5</em>) – The number of points that a player earns at each stage that they get to.</p></li>
+<li><p><strong>playerList</strong> (list of <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a>) – A list containg the players who are competing in this tournament. If this is not a power of 2 then byes will be added
+to make up the numbers then then the list of players shuffled.</p></li>
+<li><p><strong>pointPerRound</strong> (<em>int</em><em>, </em><em>default 5</em>) – The number of points that a player earns at each stage that they get to.</p></li>
 </ul>
 </dd>
 </dl>
@@ -357,7 +384,7 @@ At which point the final tournament results are created and stored in <a class="
 <dl class="py method">
 <dt id="synthSportPlayer.tournament.reset">
 <code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.tournament.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>A method to reset the tournamet to be able to be played again</p>
+<dd><p>A method to reset the tournament to be able to be played again.</p>
 </dd></dl>
 
 </dd></dl>
@@ -385,6 +412,116 @@ At which point the final tournament results are created and stored in <a class="
 
 </dd></dl>
 
+<dl class="py class">
+<dt id="synthSportPlayer.robin">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">robin</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">playerList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointPerWin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.robin" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to model a round robin tournament.</p>
+<p>A round robin is a variation on a tournament setting where all the players play against each other.
+The winner is normally the one with the most matches. If there’s any a draw it then goes to their win difference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>playerList</strong> (<em>list of player</em>) – The players who are to play in this this round robin. If there is an odd number of players, a <a class="reference internal" href="#synthSportPlayer.bye" title="synthSportPlayer.bye"><code class="xref py py-class docutils literal notranslate"><span class="pre">bye</span></code></a> will be added in.</p></li>
+<li><p><strong>pointPerWin</strong> (<em>int</em><em>, </em><em>default 5</em>) – The number of points that players will recieve at the end of the tournament for each win.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="synthSportPlayer.robin.numPlayers">
+<code class="sig-name descname"><span class="pre">numPlayers</span></code><a class="headerlink" href="#synthSportPlayer.robin.numPlayers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of players that are competing in this round robin.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="synthSportPlayer.robin.matchRec">
+<code class="sig-name descname"><span class="pre">matchRec</span></code><a class="headerlink" href="#synthSportPlayer.robin.matchRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list where the match results are stored when they are completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="synthSportPlayer.robin.round">
+<code class="sig-name descname"><span class="pre">round</span></code><a class="headerlink" href="#synthSportPlayer.robin.round" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer used to track what current round the tournament is in.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="synthSportPlayer.robin.tournRec">
+<code class="sig-name descname"><span class="pre">tournRec</span></code><a class="headerlink" href="#synthSportPlayer.robin.tournRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pandas dataframe that is created and assigned once the tournament is complete containing all the match results, made from the <a class="reference internal" href="#synthSportPlayer.robin.matchRec" title="synthSportPlayer.robin.matchRec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">matchRec</span></code></a> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="synthSportPlayer.robin.winLossRec">
+<code class="sig-name descname"><span class="pre">winLossRec</span></code><a class="headerlink" href="#synthSportPlayer.robin.winLossRec" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pandas dataframe containing the number of wins, losses and the winning point difference for each player</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="synthSportPlayer.robin.distributePoints">
+<code class="sig-name descname"><span class="pre">distributePoints</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.robin.distributePoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to distribute the points.</p>
+<p>For each match a player has won, the value that is stored in the corresponding entry of <a class="reference internal" href="#synthSportPlayer.robin.winLossRec" title="synthSportPlayer.robin.winLossRec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">winLossRec</span></code></a>, they will gain points equal
+to <code class="xref py py-attr docutils literal notranslate"><span class="pre">pointPerWin</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="synthSportPlayer.robin.permute">
+<code class="sig-name descname"><span class="pre">permute</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.robin.permute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permute the order of the players for the next round of the round robin.</p>
+<p>For a round robin you have to permute the players in a certain way to make everyone play everyone else.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="synthSportPlayer.robin.playRound">
+<code class="sig-name descname"><span class="pre">playRound</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.robin.playRound" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to play all the matches in the current round.</p>
+<p>This plays out the round with the players against their allocated opponent for the current round.
+Each match result is added to the <a class="reference internal" href="#synthSportPlayer.robin.matchRec" title="synthSportPlayer.robin.matchRec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">matchRec</span></code></a>, and the <a class="reference internal" href="#synthSportPlayer.robin.winLossRec" title="synthSportPlayer.robin.winLossRec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">winLossRec</span></code></a> is updated with the results,
+unless it is against a <a class="reference internal" href="#synthSportPlayer.bye" title="synthSportPlayer.bye"><code class="xref py py-class docutils literal notranslate"><span class="pre">bye</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="synthSportPlayer.robin.playTourn">
+<code class="sig-name descname"><span class="pre">playTourn</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.robin.playTourn" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to play the entire tournament.</p>
+<p>Activating this method will play out the tournament until every <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a> has played everyother <a class="reference internal" href="#synthSportPlayer.player" title="synthSportPlayer.player"><code class="xref py py-class docutils literal notranslate"><span class="pre">player</span></code></a>.
+At which point the final tournament results are created and stored in <a class="reference internal" href="#synthSportPlayer.robin.tournRec" title="synthSportPlayer.robin.tournRec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tournRec</span></code></a>. Points are then given to the players in
+accordance with how many matches they won.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="synthSportPlayer.robin.reset">
+<code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.robin.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to reset the tournament.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="seasons">
 <h2>Seasons<a class="headerlink" href="#seasons" title="Permalink to this headline">¶</a></h2>
@@ -395,13 +532,15 @@ At which point the final tournament results are created and stored in <a class="
 <dd><p>A class to handle a season of tournaments being played.</p>
 <p>A season is a squence of tournaments that are played by a group of players one after another and collect points as they go based
 on performance in each tournament.</p>
+<p class="rubric">Notes</p>
+<p>At this points the seasons automatically use <a class="reference internal" href="#synthSportPlayer.tournament" title="synthSportPlayer.tournament"><code class="xref py py-class docutils literal notranslate"><span class="pre">tournament</span></code></a> and does not work with <a class="reference internal" href="#synthSportPlayer.robin" title="synthSportPlayer.robin"><code class="xref py py-class docutils literal notranslate"><span class="pre">robin</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>numPlayers</strong> (<em>int</em><em>, </em><em>default=16</em>) – The number of players that will be generated to play in this season. This will be overridden if players are provided</p></li>
-<li><p><strong>tournToPlay</strong> (<em>int</em><em>, </em><em>default=20</em>) – The number of tournaments that this season will have,</p></li>
-<li><p><strong>players</strong> (<em>list of players</em><em>, </em><em>default=None</em>) – Optional. If there are pre-existing players that the user wishes to enter into this season. The number of players in the list will override numPlayers.</p></li>
-<li><p><strong>playerSum</strong> (<em>DataFrame</em><em>, </em><em>default=None</em>) – Optional. If the player are being provided externally then their summary data table can be provided for their total point record to be appended to.</p></li>
+<li><p><strong>numPlayers</strong> (<em>int</em><em>, </em><em>default 16</em>) – The number of players that will be generated to play in this season. This will be overridden if players are provided</p></li>
+<li><p><strong>tournToPlay</strong> (<em>int</em><em>, </em><em>default 20</em>) – The number of tournaments that this season will have,</p></li>
+<li><p><strong>players</strong> (<em>list of players</em><em>, </em><em>default None</em>) – Optional. If there are pre-existing players that the user wishes to enter into this season. The number of players in the list will override numPlayers.</p></li>
+<li><p><strong>playerSum</strong> (<em>DataFrame</em><em>, </em><em>default None</em>) – Optional. If the player are being provided externally then their summary data table can be provided for their total point record to be appended to.</p></li>
 </ul>
 </dd>
 </dl>
@@ -427,13 +566,24 @@ on performance in each tournament.</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt id="synthSportPlayer.season.seasonRes">
+<code class="sig-name descname"><span class="pre">seasonRes</span></code><a class="headerlink" href="#synthSportPlayer.season.seasonRes" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pandas dataframe with all of the tournament results concatenated into one dataframe, which is done upon season completion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dataframe, default None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="synthSportPlayer.season.export">
 <code class="sig-name descname"><span class="pre">export</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fldr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'seasonData'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.season.export" title="Permalink to this definition">¶</a></dt>
 <dd><p>A function to export the players, the tournament results tables, and the season points table as CSVs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fldr</strong> (<em>str</em><em>, </em><em>default='seasonData'</em>) – The name to call the folder the results shall be stored in.</p>
+<dd class="field-odd"><p><strong>fldr</strong> (<em>str</em><em>, </em><em>default 'seasonData'</em>) – The name to call the folder the results shall be stored in.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -505,6 +655,94 @@ it will update the records and move onto make the next tournament and play the f
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+</div>
+<div class="section" id="ultilities">
+<h2>Ultilities<a class="headerlink" href="#ultilities" title="Permalink to this headline">¶</a></h2>
+<p>These functions are ultility functions designed to help with any analysis to be done.</p>
+<dl class="py function">
+<dt id="synthSportPlayer.generatePlayers">
+<code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">generatePlayers</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxSkill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.generatePlayers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to generate a numbers of players.</p>
+<p>This will generate the given number of players whose skill is uniformly random between 1 and maxSkill, and whose variance is equal to var.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> (<em>int</em>) – The number of players that are to be created.</p></li>
+<li><p><strong>maxSkill</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>default 100</em>) – The max skill that a player can have.</p></li>
+<li><p><strong>var</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>default 10</em>) – The variance to give to each player.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>playerList</strong> (<em>list of players</em>) – A list containing the players created.</p></li>
+<li><p><strong>playerInfo</strong> (<em>DataFrame</em>) – A table with information about the players created.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="synthSportPlayer.fetchPlayerSummary">
+<code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">fetchPlayerSummary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">playerList</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.fetchPlayerSummary" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to generate a player summary table.</p>
+<p>Given a list of players this will generate a pandas table with the players summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>playerList</strong> (<em>list of player</em>) – A list of players whose summary wants to be fetched</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>playerinfo</strong> – A data frame containg the summary information of all the players provided.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="synthSportPlayer.getPlayerHist">
+<code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">getPlayerHist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.getPlayerHist" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to get all the matches of a given player that reside in the provided dataframe.
+Will work on individual tournament results or on concatenated season results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pid</strong> (<em>str</em>) – The name of the player whose match results are to be searched for. This should be the players ‘.name’ atrribute</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The DataFrame that contains match results</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>pid_df</strong> – A DataFrame that contains match results that the given player has participated in.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="synthSportPlayer.getMatchUpData">
+<code class="sig-prename descclassname"><span class="pre">synthSportPlayer.</span></code><code class="sig-name descname"><span class="pre">getMatchUpData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pid2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#synthSportPlayer.getMatchUpData" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to get all the matches between two players that reside in the provided dataframe.
+Will work on individual tournament results or on concatenated season results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pid1</strong> (<em>str</em>) – The name of a player whose match results are to be searched for. This should be the players ‘.name’ atrribute</p></li>
+<li><p><strong>pid2</strong> (<em>str</em>) – The name of the other player whose match results are to be searched for. This should be the players ‘.name’ atrribute</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The DataFrame that contains match results</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mu_df</strong> – A DataFrame that contains match results that the two player has participated in against each other.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
