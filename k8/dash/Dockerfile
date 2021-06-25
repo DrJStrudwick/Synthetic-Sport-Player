@@ -1,4 +1,4 @@
-FROM python:3.8.3
+FROM python:3.8.0
 WORKDIR code/
 COPY requirements.txt .
 RUN pip3 -q install pip --upgrade
