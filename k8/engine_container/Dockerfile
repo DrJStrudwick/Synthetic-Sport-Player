@@ -1,4 +1,5 @@
 FROM python:3.8.0
+ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 WORKDIR code/
 COPY requirements.txt .
 RUN pip3 -q install pip --upgrade

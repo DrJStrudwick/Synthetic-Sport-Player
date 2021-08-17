@@ -3,3 +3,5 @@
 __pycache__
 k8/yamls
 k8/connect to k8 mysql.ipynb
+k8/config.yaml
+k8/conn-test.ipynb

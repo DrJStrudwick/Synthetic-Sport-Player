@@ -42,24 +42,24 @@ if __name__ == '__main__':
 
     print('Establishing ENV variables')
     
-    USER = os.getenv('MYSQL_USER')          #source from srt
+    USER = os.getenv('MYSQL_USER')          #source from srt, should be 'postgres'
     PASSWORD = os.getenv('MYSQL_PASSWORD')  #source from srt
-    DB = os.getenv('MYSQL_DATABASE')        #source from cfmp
-    HOST = os.getenv('HOST')                #insert from pod def, should be 'mysql'
-    PORT = os.getenv('PORT')                #insert from pod def, should be 3306
+    DB = os.getenv('MYSQL_DATABASE')        #source from cfmp, should be 'SSPDB'
+    HOST = os.getenv('HOST')                #insert from pod def, should be 'pg-db'
+    PORT = os.getenv('PORT')                #insert from pod def, should be 5432
 
 
     #-------------------------------------
 
     #establish connection to db
     print('Establishing connection to database')
-    print("mysql+pymysql://{user}:{pw}@{host}:{port}/{db}".format(host=HOST,port=PORT ,db=DB, user=USER, pw=PASSWORD))
-    engine = create_engine("mysql+pymysql://{user}:{pw}@{host}:{port}/{db}".format(host=HOST,port=PORT ,db=DB, user=USER, pw=PASSWORD))
+    print("postgresql://{user}:{pw}@{host}:{port}/{db}".format(host=HOST,port=PORT ,db=DB, user=USER, pw=PASSWORD))
+    engine = create_engine("postgresql://{user}:{pw}@{host}:{port}/{db}".format(host=HOST,port=PORT ,db=DB, user=USER, pw=PASSWORD))
     #-------------------------------------
 
     #check to see if player table exist
     print('Checking to see if tables exist')
-    df = pd.read_sql('SHOW TABLES', con=engine)
+    df = pd.read_sql("SELECT table_name FROM information_schema.tables WHERE table_schema='public'", con=engine)
     if 'PLAYER_DATA' in df['Tables_in_SSPDB'].values:
         print('Table already exists')
         df2 = pd.read_sql('SELECT * FROM PLAYER_DATA', con=engine)
